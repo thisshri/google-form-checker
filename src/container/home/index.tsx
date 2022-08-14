@@ -171,6 +171,8 @@ const Home = () => {
         </Button>
       </section>
 
+    {
+      !!finalResult.length &&
       <Table
         striped="columns"
         bordered
@@ -188,6 +190,7 @@ const Home = () => {
           )
         }
       </Table>
+    }
     </Container>
   )
 }
