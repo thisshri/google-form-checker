@@ -13,7 +13,7 @@ const Home = () => {
   const [csvData, setCsvData] = useState<any[]>([]);
   const [csvHeader, setCsvHeader] = useState<any[]>([]);
   const [teacher, setTeacher] = useState<any>();
-  const [finalResult, setFinalResult] = useState<any>();
+  const [finalResult, setFinalResult] = useState<any>([]);
   const [questionsStartFrom, setQuestionsStartFrom] = useState<number>(0);
   
   const correctAnswerMarksField = useRef<any>();
@@ -58,16 +58,11 @@ const Home = () => {
   }
 
   const getQuestions = () => {
-    if (!csvHeader.length) {
-      return <small>Please uplaod csv file</small>
-    }
-
     return (
       <select
         onChange={
           (event: any) => {
             setQuestionsStartFrom(event.target.value);
-            console.log(teacher);
           }
         }
         name="questions"
@@ -82,12 +77,10 @@ const Home = () => {
   const getTeachers = () => {
     return (
       <select
-        className="formControl"
         onChange={
           (event: any) => {
             const teacherResponse = event.target.value.split(',');
             setTeacher(teacherResponse);
-            console.log(teacher);
           }
         }
         name="teacher"
@@ -151,8 +144,9 @@ const Home = () => {
       </section>
 
       <section>
-        <label htmlFor="foo">Marks Per Negative Question: </label>
+        <label htmlFor="incorrectMarks">Marks Per Negative Question: </label>
         <input
+          name="incorrectMarks"
           type="text"
           defaultValue={0.25}
           ref={incorrectAnswerMarksField}
