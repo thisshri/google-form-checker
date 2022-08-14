@@ -153,23 +153,23 @@ const Home = () => {
         />
       </section>
 
-    <section className="d-grid gap-2">
-      <Button variant="primary"
-        onClick={calculate}
-      >
-        Calculate
-      </Button>
+      <section className="d-grid gap-2">
+        <Button variant="primary"
+          onClick={calculate}
+        >
+          Calculate
+        </Button>
 
-      <Button
-        variant="secondary"
-        onClick={() => {
-          setCsvHeader([])
-          setCsvData([])
-        }}
-      >
-        Clear
-      </Button>
-    </section>
+        <Button
+          variant="secondary"
+          onClick={() => {
+            setCsvHeader([])
+            setCsvData([])
+          }}
+        >
+          Clear
+        </Button>
+      </section>
 
       <Table
         striped="columns"
@@ -179,7 +179,7 @@ const Home = () => {
       >
         <tr>
           {
-            csvHeader.slice(0, questionsStartFrom).concat(['-', '❌', '✅', 'Final Marks'])?.map((heading: any) => <th> { heading } </th>)
+            csvHeader.slice(0, questionsStartFrom).concat(['-', '❌', '✅', 'Final Marks']).map((heading: any) => <th> { heading } </th>)
           }
         </tr>
         {
