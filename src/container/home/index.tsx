@@ -1,6 +1,12 @@
 import React, { useRef, useState } from "react";
 import Papa from "papaparse";
 
+import {
+  Button,
+  Container,
+  Table,
+} from 'react-bootstrap';
+
 import './styles.scss';
 
 const Home = () => {
@@ -13,13 +19,70 @@ const Home = () => {
   const correctAnswerMarksField = useRef<any>();
   const incorrectAnswerMarksField = useRef<any>();
 
-  const getTeachers = () => {
+  const calculate = () => {
+    const correctAnswerMarks = correctAnswerMarksField.current.value;
+    const incorrectAnswerMarks = incorrectAnswerMarksField.current.value;
+
+    const finalResult = [];
+
+    for (const questionResponse of csvData) {
+      let studentCorrectResponseCount = 0;
+      let studentIncorrectResponseCount = 0;
+      let studentNoResponseCount = 0;
+      for (let questionIndex = questionsStartFrom; questionIndex < csvHeader.length; questionIndex++) {
+        const teacherQuestionResponse = teacher[questionIndex];
+        const studentQuestionResponse = questionResponse[questionIndex];
+        if (studentQuestionResponse === '') {
+          studentNoResponseCount++;
+        }
+        else if (teacherQuestionResponse === studentQuestionResponse) {
+          studentCorrectResponseCount++;
+        } else {
+          studentIncorrectResponseCount++;
+        }
+      }
+      const finalMarks = (studentCorrectResponseCount * correctAnswerMarks) - (studentIncorrectResponseCount * incorrectAnswerMarks);
+      finalResult.push([questionResponse.slice(0, questionsStartFrom).concat(
+        [studentNoResponseCount, studentIncorrectResponseCount, studentCorrectResponseCount, finalMarks]
+      )]);
+    }
+
+    setFinalResult(finalResult.sort(
+      ([ a ], [ b ]) => {
+        const length = a.length;
+        const _a = a[length-1] * 100;
+        const _b = b[length-1] * 100;
+        return _b - _a;
+      }
+    ));
+  }
+
+  const getQuestions = () => {
     if (!csvHeader.length) {
       return <small>Please uplaod csv file</small>
     }
 
     return (
       <select
+        onChange={
+          (event: any) => {
+            setQuestionsStartFrom(event.target.value);
+            console.log(teacher);
+          }
+        }
+        name="questions"
+      >
+        {
+          csvHeader.map(( title, index) => <option key={index} value={index}>{title}</option>)
+        }
+      </select>
+    )
+  }
+
+  const getTeachers = () => {
+    return (
+      <select
+        className="formControl"
         onChange={
           (event: any) => {
             const teacherResponse = event.target.value.split(',');
@@ -45,7 +108,6 @@ const Home = () => {
 
     Papa.parse(file, {
       complete: function(results: any) {
-        // console.log("Finished:", results.data);
         const csvHeader = results.data.shift()
         setCsvHeader(csvHeader);
         setCsvData(results.data);
@@ -53,110 +115,86 @@ const Home = () => {
     });
   }
 
-  return (
-    <>
-      <main>
-        <input
-          type="file"
-          onChange={handleUplaod}
-        />
-        <hr/>
-        <span>
-          Identitify Teacher
-        </span>
-        {
-          getTeachers()
-        }
-        <hr/>
+  if (!csvHeader.length) {
+    return <>
+      <label htmlFor="csvUpload">Upload the CSV File </label>
+      <input className="custom-file-input" name="csvUpload" type="file" onChange={handleUplaod} />
+    </>
+  }
 
-        <label htmlFor="foo">Marks per correct question: </label>
+  return (
+    <Container className="d-grid gap-2">
+      <section>
+        <p>
+          <label htmlFor="inputTeacher">
+            Identitify Teacher
+          </label>
+        </p>
+        { getTeachers() }
+      </section>
+
+      <section>
+        <p>
+          Select First Questions
+        </p>
+        { getQuestions() }
+      </section>
+
+      <section>
+        <label htmlFor="correctMarks">Marks Per Correct Question: </label>
         <input
+          name="correctMarks"
           type="text"
           defaultValue={1}
           ref={correctAnswerMarksField}
         />
-        <br/>
+      </section>
 
-        <label htmlFor="foo">Negative marks per question: </label>
+      <section>
+        <label htmlFor="foo">Marks Per Negative Question: </label>
         <input
           type="text"
           defaultValue={0.25}
           ref={incorrectAnswerMarksField}
         />
+      </section>
 
-        <br/>
-        <br/>
-
-        <button
-          onClick={(event: any) => {
-            const correctAnswerMarks = correctAnswerMarksField.current.value;
-            const incorrectAnswerMarks = incorrectAnswerMarksField.current.value;
-
-            // get question index
-            const questionsStartFrom = csvHeader.findIndex((heading: any, index: any) => {
-              console.log(heading, index);
-              return (parseInt(heading) === 1 && parseInt(csvHeader[index+1]) === 2);
-            });
-
-            setQuestionsStartFrom(questionsStartFrom);
-
-
-            const finalResult = [];
-
-            for (const questionResponse of csvData) {
-              let studentCorrectResponseCount = 0;
-              let studentIncorrectResponseCount = 0;
-              let studentNoResponseCount = 0;
-              for (let questionIndex = questionsStartFrom; questionIndex < csvHeader.length; questionIndex++) {
-                const teacherQuestionResponse = teacher[questionIndex];
-                const studentQuestionResponse = questionResponse[questionIndex];
-                if (studentQuestionResponse === '') {
-                  studentNoResponseCount++;
-                }
-                else if (teacherQuestionResponse === studentQuestionResponse) {
-                  studentCorrectResponseCount++;
-                } else {
-                  studentIncorrectResponseCount++;
-                }
-              }
-              const finalMarks = (studentCorrectResponseCount * correctAnswerMarks) - (studentIncorrectResponseCount * incorrectAnswerMarks);
-              finalResult.push([questionResponse.slice(0, questionsStartFrom).concat(
-                [studentNoResponseCount, studentIncorrectResponseCount, studentCorrectResponseCount, finalMarks]
-              )]);
-            }
-
-            setFinalResult(finalResult.sort(
-              ([ a ], [ b ]) => {
-                const length = a.length;
-                const _a = a[length-1] * 100;
-                const _b = b[length-1] * 100;
-                return _b - _a;
-              }
-            ));
-          }}
-        >
-          Calculate
-        </button>
-      </main>
-      <table
-        className="result-table"
+    <section className="d-grid gap-2">
+      <Button variant="primary"
+        onClick={calculate}
       >
-      <tr>
+        Calculate
+      </Button>
+
+      <Button
+        variant="secondary"
+        onClick={() => {
+          setCsvHeader([])
+          setCsvData([])
+        }}
+      >
+        Clear
+      </Button>
+    </section>
+
+      <Table
+        striped="columns"
+        bordered
+        responsive
+        size="sm"
+      >
+        <tr>
+          {
+            csvHeader.slice(0, questionsStartFrom).concat(['-', '❌', '✅', 'Final Marks'])?.map((heading: any) => <th> { heading } </th>)
+          }
+        </tr>
         {
-          csvHeader.slice(0, questionsStartFrom).concat(['-', '❌', '✅', 'Final Marks'])?.map((heading: any) => <th> { heading } </th>)
-        }
-      </tr>
-      {
-        finalResult?.map(
-          (student: any) => <tr>
-            {
-              student.map((data: any) => data.map((d:any) => <td> {d}</td>))
-            }
-            </tr>
+          finalResult?.map(
+            (student: any) => <tr>{ student.map((data: any) => data.map((d:any) => <td> {d}</td>))}</tr>
           )
-      }
-      </table>
-    </>
+        }
+      </Table>
+    </Container>
   )
 }
 

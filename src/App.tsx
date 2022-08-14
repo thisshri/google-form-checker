@@ -1,15 +1,13 @@
 import React from 'react';
 import Home from './container/home';
 
-import './App.css';
+import './App.scss';
 
 function App() {
   return (
-    <div>
-      <h1>Google Forms</h1>
-      <h2>Quiz Calculator</h2>
+    <>
       <Home/>
-    </div>
+    </>
   );
 }
 
