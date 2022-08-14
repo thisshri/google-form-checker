@@ -10,6 +10,7 @@ import {
 import './styles.scss';
 
 const Home = () => {
+  const [examName, setExamName] = useState<string>("Exam");
   const [csvData, setCsvData] = useState<any[]>([]);
   const [csvHeader, setCsvHeader] = useState<any[]>([]);
   const [teacher, setTeacher] = useState<any>();
@@ -125,7 +126,15 @@ const Home = () => {
       <summary className="no-print">
         <article>
           <p>
-            <label htmlFor="inputTeacher">
+            <label htmlFor="inputExamName">
+              Exam Name:
+            </label>
+          </p>
+          <input type={"text"} onChange={(event: any) => setExamName(event.target.value)}/>
+        </article>
+        <article>
+          <p>
+            <label htmlFor="inputExamName">
               Identitify Teacher
             </label>
           </p>
@@ -178,6 +187,9 @@ const Home = () => {
         </article>
       </summary>
 
+      <h1 className="text-center">
+        { examName }
+      </h1>
     {
       !!finalResult.length &&
       <Table
