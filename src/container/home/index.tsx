@@ -16,7 +16,7 @@ const Home = () => {
   const [teacher, setTeacher] = useState<any>();
   const [finalResult, setFinalResult] = useState<any>([]);
   const [questionsStartFrom, setQuestionsStartFrom] = useState<number>(0);
-  
+
   const correctAnswerMarksField = useRef<any>();
   const incorrectAnswerMarksField = useRef<any>();
 
@@ -49,10 +49,10 @@ const Home = () => {
     }
 
     setFinalResult(finalResult.sort(
-      ([ a ], [ b ]) => {
+      ([a], [b]) => {
         const length = a.length;
-        const _a = a[length-1] * 100;
-        const _b = b[length-1] * 100;
+        const _a = a[length - 1] * 100;
+        const _b = b[length - 1] * 100;
         return _b - _a;
       }
     ));
@@ -69,7 +69,7 @@ const Home = () => {
         name="questions"
       >
         {
-          csvHeader.map(( title, index) => <option key={index} value={index}>{title}</option>)
+          csvHeader.map((title, index) => <option key={index} value={index}>{title}</option>)
         }
       </select>
     )
@@ -89,8 +89,8 @@ const Home = () => {
         {
           csvData.map(quizResult => {
             const [, score, name, village] = quizResult;
-              return <option key={name+village} value={quizResult}>{`${ name } - (${ score })`}</option>
-            }
+            return <option key={name + village} value={quizResult}>{`${name} - (${score})`}</option>
+          }
           )
         }
       </select>
@@ -98,10 +98,10 @@ const Home = () => {
   }
 
   const handleUplaod = (event: any) => {
-    const [ file ] = event.target.files;
+    const [file] = event.target.files;
 
     Papa.parse(file, {
-      complete: function(results: any) {
+      complete: function (results: any) {
         const csvHeader = results.data.shift()
 
         // Remove timestamp
@@ -123,30 +123,36 @@ const Home = () => {
 
   return (
     <Container fluid className="d-grid gap-2">
-      <summary className="no-print">
+      <summary className="no-print border p-2">
         <article>
           <p>
             <label htmlFor="inputExamName">
-              Exam Name:
+              Exam Name
             </label>
           </p>
-          <input type={"text"} onChange={(event: any) => setExamName(event.target.value)}/>
+          <input name="inputExamName" type={"text"} onChange={(event: any) => setExamName(event.target.value)} />
+          <hr />
         </article>
+
         <article>
           <p>
-            <label htmlFor="inputExamName">
+            <label htmlFor="inputTeacher">
               Identitify Teacher
             </label>
           </p>
-          { getTeachers() }
+          {getTeachers()}
         </article>
+
+        <hr />
 
         <article>
           <p>
             Select First Questions
           </p>
-          { getQuestions() }
+          {getQuestions()}
         </article>
+
+        <hr />
 
         <article>
           <label htmlFor="correctMarks">Marks Per Correct Question: </label>
@@ -168,6 +174,8 @@ const Home = () => {
           />
         </article>
 
+        <hr />
+
         <article className="d-grid gap-2">
           <Button variant="primary"
             onClick={calculate}
@@ -188,28 +196,28 @@ const Home = () => {
       </summary>
 
       <h1 className="text-center">
-        { examName }
+        {examName}
       </h1>
-    {
-      !!finalResult.length &&
-      <Table
-        striped="columns"
-        bordered
-        responsive
-        size="sm"
-      >
-        <tr>
+      {
+        !!finalResult.length &&
+        <Table
+          striped="columns"
+          bordered
+          responsive
+          size="sm"
+        >
+          <tr>
+            {
+              csvHeader.slice(0, questionsStartFrom).concat(['-', '❌', '✅', 'Final Marks']).map((heading: any) => <th> {heading} </th>)
+            }
+          </tr>
           {
-            csvHeader.slice(0, questionsStartFrom).concat(['-', '❌', '✅', 'Final Marks']).map((heading: any) => <th> { heading } </th>)
+            finalResult?.slice(1).map(
+              (student: any) => <tr>{student.map((data: any) => data.map((d: any) => <td> {d}</td>))}</tr>
+            )
           }
-        </tr>
-        {
-          finalResult?.slice(1).map(
-            (student: any) => <tr>{ student.map((data: any) => data.map((d:any) => <td> {d}</td>))}</tr>
-          )
-        }
-      </Table>
-    }
+        </Table>
+      }
     </Container>
   )
 }
