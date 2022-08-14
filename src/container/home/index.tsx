@@ -123,7 +123,7 @@ const Home = () => {
   }
 
   return (
-    <Container className="d-grid gap-2">
+    <Container fluid className="d-grid gap-2">
       <section>
         <p>
           <label htmlFor="inputTeacher">
