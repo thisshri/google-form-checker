@@ -189,7 +189,7 @@ const Home = () => {
           }
         </tr>
         {
-          finalResult?.map(
+          finalResult?.slice(1).map(
             (student: any) => <tr>{ student.map((data: any) => data.map((d:any) => <td> {d}</td>))}</tr>
           )
         }
