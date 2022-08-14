@@ -102,8 +102,13 @@ const Home = () => {
     Papa.parse(file, {
       complete: function(results: any) {
         const csvHeader = results.data.shift()
-        setCsvHeader(csvHeader);
-        setCsvData(results.data);
+
+        // Remove timestamp
+        setCsvHeader(csvHeader.splice(1));
+        setCsvData(results.data.map((data: any) => {
+          // removing timestamp column name
+          return data.splice(1);
+        }));
       }
     });
   }
