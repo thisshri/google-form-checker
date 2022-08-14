@@ -122,59 +122,61 @@ const Home = () => {
 
   return (
     <Container fluid className="d-grid gap-2">
-      <section>
-        <p>
-          <label htmlFor="inputTeacher">
-            Identitify Teacher
-          </label>
-        </p>
-        { getTeachers() }
-      </section>
+      <summary className="no-print">
+        <article>
+          <p>
+            <label htmlFor="inputTeacher">
+              Identitify Teacher
+            </label>
+          </p>
+          { getTeachers() }
+        </article>
 
-      <section>
-        <p>
-          Select First Questions
-        </p>
-        { getQuestions() }
-      </section>
+        <article>
+          <p>
+            Select First Questions
+          </p>
+          { getQuestions() }
+        </article>
 
-      <section>
-        <label htmlFor="correctMarks">Marks Per Correct Question: </label>
-        <input
-          name="correctMarks"
-          type="text"
-          defaultValue={1}
-          ref={correctAnswerMarksField}
-        />
-      </section>
+        <article>
+          <label htmlFor="correctMarks">Marks Per Correct Question: </label>
+          <input
+            name="correctMarks"
+            type="text"
+            defaultValue={1}
+            ref={correctAnswerMarksField}
+          />
+        </article>
 
-      <section>
-        <label htmlFor="incorrectMarks">Marks Per Negative Question: </label>
-        <input
-          name="incorrectMarks"
-          type="text"
-          defaultValue={0.25}
-          ref={incorrectAnswerMarksField}
-        />
-      </section>
+        <article>
+          <label htmlFor="incorrectMarks">Marks Per Negative Question: </label>
+          <input
+            name="incorrectMarks"
+            type="text"
+            defaultValue={0.25}
+            ref={incorrectAnswerMarksField}
+          />
+        </article>
 
-      <section className="d-grid gap-2">
-        <Button variant="primary"
-          onClick={calculate}
-        >
-          Calculate
-        </Button>
+        <article className="d-grid gap-2">
+          <Button variant="primary"
+            onClick={calculate}
+          >
+            Calculate
+          </Button>
 
-        <Button
-          variant="secondary"
-          onClick={() => {
-            setCsvHeader([])
-            setCsvData([])
-          }}
-        >
-          Clear
-        </Button>
-      </section>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setCsvHeader([])
+              setCsvData([])
+            }}
+          >
+            Clear
+          </Button>
+        </article>
+      </summary>
 
     {
       !!finalResult.length &&
