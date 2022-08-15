@@ -68,6 +68,7 @@ const Home = () => {
         }
         name="questions"
       >
+        <option>Select First Qestion</option>
         {
           csvHeader.map((title, index) => <option key={index} value={index}>{title}</option>)
         }
@@ -86,6 +87,7 @@ const Home = () => {
         }
         name="teacher"
       >
+        <option>Select Teacher</option>
         {
           csvData.map(quizResult => {
             const [, score, name, village] = quizResult;
@@ -123,36 +125,22 @@ const Home = () => {
 
   return (
     <Container fluid className="d-grid gap-2">
-      <summary className="no-print border p-2">
+      <form className="no-print border p-2 custom-form">
         <article>
-          <p>
-            <label htmlFor="inputExamName">
-              Exam Name
-            </label>
-          </p>
-          <input name="inputExamName" type={"text"} onChange={(event: any) => setExamName(event.target.value)} />
-          <hr />
+          <input
+            placeholder={examName}
+            type={"text"}
+            onChange={(event: any) => setExamName(event.target.value)}
+          />
         </article>
 
         <article>
-          <p>
-            <label htmlFor="inputTeacher">
-              Identitify Teacher
-            </label>
-          </p>
           {getTeachers()}
         </article>
 
-        <hr />
-
         <article>
-          <p>
-            Select First Questions
-          </p>
           {getQuestions()}
         </article>
-
-        <hr />
 
         <article>
           <label htmlFor="correctMarks">Marks Per Correct Question: </label>
@@ -174,8 +162,6 @@ const Home = () => {
           />
         </article>
 
-        <hr />
-
         <article className="d-grid gap-2">
           <Button variant="primary"
             onClick={calculate}
@@ -193,7 +179,7 @@ const Home = () => {
             Clear
           </Button>
         </article>
-      </summary>
+      </form>
 
       <h1 className="text-center">
         {examName}

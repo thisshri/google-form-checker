@@ -4,3 +4,10 @@
     display: none !important;
   }
 }
+
+.custom-form {
+  select, input {
+    width: 100%;
+    margin: 10px 0px;
+  }
+}
