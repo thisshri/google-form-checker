@@ -194,7 +194,7 @@ const Home = () => {
         >
           <tr>
             {
-              csvHeader.slice(0, questionsStartFrom).concat(['⏩', '❌', '✅', 'Final Marks']).map((heading: any) => <th> {heading} </th>)
+              csvHeader.slice(0, questionsStartFrom).concat(['-', '❌', '✅', 'Final Marks']).map((heading: any) => <th> {heading} </th>)
             }
           </tr>
           {

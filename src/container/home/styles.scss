@@ -13,5 +13,16 @@
 }
 
 td {
-  min-width: 40px;
+  min-width: 30px;
+
+  &:nth-last-child(2),
+  &:nth-last-child(3)
+  {
+    text-align: center;
+  }
+
+  &:last-child {
+    font-weight: 600;
+    text-align: right;
+  }
 }
