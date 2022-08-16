@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/google-form-checker/static/css/main.6aff060e.css",
-    "main.js": "/google-form-checker/static/js/main.7db36edf.js",
+    "main.css": "/google-form-checker/static/css/main.77215ae3.css",
+    "main.js": "/google-form-checker/static/js/main.b52c5179.js",
     "static/js/787.d31f1162.chunk.js": "/google-form-checker/static/js/787.d31f1162.chunk.js",
     "index.html": "/google-form-checker/index.html",
-    "main.6aff060e.css.map": "/google-form-checker/static/css/main.6aff060e.css.map",
-    "main.7db36edf.js.map": "/google-form-checker/static/js/main.7db36edf.js.map",
+    "main.77215ae3.css.map": "/google-form-checker/static/css/main.77215ae3.css.map",
+    "main.b52c5179.js.map": "/google-form-checker/static/js/main.b52c5179.js.map",
     "787.d31f1162.chunk.js.map": "/google-form-checker/static/js/787.d31f1162.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.6aff060e.css",
-    "static/js/main.7db36edf.js"
+    "static/css/main.77215ae3.css",
+    "static/js/main.b52c5179.js"
   ]
 }
